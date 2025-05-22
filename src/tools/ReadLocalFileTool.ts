@@ -2,6 +2,7 @@ import { ToolHandler } from "../types/index.js";
 import fs from "fs/promises";
 import path from "path";
 import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
@@ -12,12 +13,15 @@ export class ReadLocalFileTool implements ToolHandler {
     return {
       name: this.name,
       description: "Reads the content of a local text file",
-      parameters: {
-        fileName: {
-          type: "string",
-          required: true,
-          description: "Name of the local file (relative to the working directory)",
+      inputSchema: {
+        type: "object",
+        properties: {
+          fileName: {
+            type: "string",
+            description: "Name of the local file (relative to the working directory)",
+          },
         },
+        required: ["fileName"],
       },
     };
   }

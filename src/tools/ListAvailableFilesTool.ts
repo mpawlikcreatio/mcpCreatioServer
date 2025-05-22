@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { ToolHandler } from "../types/index.js";
 
 export class ListAvailableFilesTool implements ToolHandler {
@@ -7,7 +8,11 @@ export class ListAvailableFilesTool implements ToolHandler {
     return {
       name: this.name,
       description: "Returns a list of available file names",
-      parameters: {},
+      inputSchema: {
+        type: "object",
+        properties: {},
+        required: [],
+      },
     };
   }
 

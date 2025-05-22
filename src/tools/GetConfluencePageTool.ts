@@ -22,18 +22,33 @@ export class GetConfluencePageTool implements ToolHandler {
     return {
       name: this.name,
       description: "Fetches a Confluence page by ID",
-      parameters: {
-        id: { type: "string", required: true },
-        cookie: { type: "string", required: true },
+      inputSchema: {
+        type: "object",
+        properties: {
+          id: {
+            type: "string",
+            description: "The Confluence page ID",
+          },
+          cookie: {
+            type: "string",
+            description: "Authentication cookie for accessing Confluence",
+          },
+        },
+        required: ["id", "cookie"],
       },
     };
   }
 
   async onCall(args: { id: string; cookie: string }) {
     const { id, cookie } = args;
+
     const response = await this.axiosInstance.get(
       `/rest/api/content/${id}?expand=body.view`,
-      { headers: { Cookie: cookie } }
+      {
+        headers: {
+          Cookie: cookie,
+        },
+      }
     );
 
     const title = response.data.title;
