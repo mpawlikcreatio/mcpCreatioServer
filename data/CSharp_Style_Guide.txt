@@ -1,0 +1,214 @@
+
+Location of Class Members Inside .cs File
+
+All elements of the class must be placed in their respective regions.
+Classes/interfaces should only be nested in regions if they are nested inside another class.
+Each region must be named in CamelCase.
+
+Region Order Inside Class, Struct, or Interface:
+1. Enum : ElementName
+2. Delegates : ModifierName
+3. Interface : ElementName
+4. Struct : ElementName
+5. Class : ElementName
+6. Constants : ModifierName
+7. Fields : ModifierName
+8. Constructors : ModifierName
+9. Properties : ModifierName
+10. Events : ModifierName
+11. Methods : ModifierName
+
+Region Order by Access Modifier:
+- private
+- protected
+- internal
+- protected internal
+- public
+
+Arrangement of Elements Inside Regions:
+- static
+- abstract
+- override
+- new
+- regular (including virtual)
+
+Exception:
+Private backing field of a property is located directly before the property in the same region.
+Multiple backing fields for one property are allowed.
+
+Example:
+private PackageInstallUtilities _installUtilities;
+internal PackageInstallUtilities InstallUtilities {
+    get {
+        return _installUtilities ?? (_installUtilities = new PackageInstallUtilities(SystemUserConnection));
+    }
+}
+
+Naming Class Members
+
+General Rules:
+
+Identifier       Modifier     Naming
+local variable   any          lowerCamelCase
+field            private      _lowerCamelCase
+field            others       UpperCamelCase
+property         any          UpperCamelCase
+method           any          UpperCamelCase
+type             any          UpperCamelCase
+namespace        any          UpperCamelCase
+
+Method Names must start with verbs like Get, Set, Specify, Apply, Update, etc.
+
+Incorrect:
+public string RootName() {}
+public bool IsInitialized() {}
+
+Correct:
+public string GetRootName() {}
+public bool GetIsInitialized() {}
+
+Boolean fields, properties, parameters, and variables must start with Is, Has, Have, Can, Was, Use, or Need.
+
+Incorrect:
+public bool Initialized;
+public bool ForceUpdate;
+
+Correct:
+public bool IsInitialized;
+public bool IsForceUpdate;
+public bool UseForceUpdate;
+
+List of Allowed Abbreviations:
+Application -> app
+Buffer -> buf
+DataReader -> dr
+DataSource -> ds
+Default -> def
+Dictionary -> dict
+Data Transfer Object -> dto
+EntitySchemaQuery -> esq
+Exception -> ex
+Initialize -> heat
+Localization -> lcz
+Message, Messaging -> msg
+Package -> pkg
+StringBuilder -> sb
+Synchronization -> sync
+System -> sys
+License -> lic
+Config -> cfg
+Arguments -> args
+System Under Test -> sut
+
+Using var:
+Use var when it does not reduce code clarity.
+
+Acceptable:
+var m = new T();
+var m = n as T;
+var m = (T)n;
+var m = new {a = 0, b = "name"};
+var comparisonType = FilterComparisonType.Equal;
+foreach (var item in collection) { ... }
+using (var writer = CreateWriter()) { writer.Write(data); }
+
+Explicit type required if unclear:
+float f = 3;
+bool ready = GetNextValue(entity);
+
+Braces Placement:
+- Opening brace on the same line
+- Closing brace on its own line
+
+Example:
+public void Method() {
+    if (condition) {
+        DoSomething();
+    } else {
+        while (condition) {
+            DoSomethingElse();
+        }
+    }
+}
+
+Auto-Properties:
+public int Value { get; set; }
+
+Explicit Get/Set:
+public ProcessSchemaParameter ProcessParameter {
+    get {
+        return _processParameter;
+    }
+    internal set {
+        _processParameter = value;
+    }
+}
+
+Namespaces and Types:
+namespace ExampleNamespace
+{
+    internal interface IExample {
+        void Foo();
+    }
+}
+
+LINQ-like Queries Formatting:
+- Top, Distinct with new Select on first line
+- Method chains start from new lines
+- Indent Columns, And, Or one level deeper than From/Where
+- Joins start from new line
+- On, As, IsEqual stay on same line if short
+
+Example:
+var select =
+    new Select(userConnection).Top(1)
+        .Column("Name")
+    .From("City")
+    .InnerJoin("Country").On("Country", "Id").IsEqual("City", "CountryId");
+
+OpenBlock Example:
+var select =
+    new Select(userConnection)
+        .Column("Name")
+    .From("Country")
+    .Where()
+        .OpenBlock()
+            .OpenBlock(Column.Parameter("Value1")).IsNull()
+                .And(Column.Parameter("Value2")).IsNull()
+                .And(Column.Parameter("Value3")).IsNull()
+            .CloseBlock()
+            .Or("Id").IsNull()
+        .CloseBlock();
+
+Execution must be on separate line:
+var delete =
+    new Delete(userConnection)
+    .From("SysProfileData")
+    .Where("Id").IsEqual(Column.Parameter(profileId));
+delete.Execute();
+
+Formatting Exceptions Skipped by StyleCop:
+Correct spacing between attributes and identifiers:
+public HttpResponseMessage Post([FromBody] string name)
+
+Localization:
+All display messages must be localized.
+Logs must be in English only (no localization).
+
+Incorrect:
+_log.Debug("Request sent to " + host);
+
+Correct:
+_log.Error(string.Format(new LocalizableString("Namespace", "Key"), value));
+
+Code Comments:
+Use only for:
+- Explaining disabled code
+- TODO-style notes
+
+Format:
+TODO #12345 Describe action
+TODO #IP-456 Fix logic in method
+
+Exceptions:
+- XML documentation allowed and follows separate rules

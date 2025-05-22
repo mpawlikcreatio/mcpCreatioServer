@@ -1,0 +1,43 @@
+{
+  "name": "mcpcreatioserver",
+  "version": "1.0.0",
+  "description": "mcp server for personal use",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "okx-mcp-server": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mpawlikcreatio/mcpCreatioServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mpawlikcreatio/mcpCreatioServer/issues"
+  },
+  "files": [
+    "build"
+  ],
+  "homepage": "https://github.com/mpawlikcreatio/mcpCreatioServer#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.18",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.2",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "zod": "^3.24.4"
+  }
+}
