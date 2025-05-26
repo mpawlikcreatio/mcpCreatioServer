@@ -1,0 +1,233 @@
+
+(Updated for JSDuck 4)
+
+Writing documentation is hard. Writing good documentation is even harder. And most developers are under ever-lasting pressure to concentrate on everything besides the documentation. There is never enough time for writing the docs.
+
+And that's why JSDuck aims to make documentation as painless as possible.
+
+First off JSDuck chooses Markdown to ease the structuring of text:
+
+/**
+ * Returns description of the time of the day.
+ *
+ * Different heuristics are used to come up with the **most** appropriate
+ * wording for the current user.
+ *
+ * @return {String} Possible return values are:
+ *
+ * - midday
+ * - late night
+ * - early morning
+ * - just before lunch
+ * - tea time
+ */
+getDayTime: function() {
+You can also use HTML, because Markdown allows embedding of HTML, which will come in handy if you have a lot of legacy documentation written for ext-doc.
+
+Second, JSDuck tries to infer as much information from code as possible. For this it looks at the code that immediately follows the doc-comment. To see this in action, we have to get into the details...
+
+Classes
+Documenting an Ext JS 4 class will be a breeze if you are using the standard Ext.define syntax:
+
+/**
+ * A duck, not just a stupid bird.
+ */
+Ext.define("Duck", {
+    extend: "Bird",
+    mixins: {
+        observe: 'Ext.util.Observable',
+        fly: 'Fliable'
+    },
+    singleton: true,
+JSDuck will automatically recognize that this is a doc-comment for class Duck and will auto-detect several tags from the config object: @extends, @mixins and @singleton.
+
+But JavaScript is a dynamic language and there are bazillion ways to define a class. JSDuck will only auto-detect all these properties when you strictly follow the above form. But don't lose hope, you can always use @tags to say things explicitly:
+
+    /**
+     * @class Duck
+     * A duck, not just a stupid bird.
+     * @extends Bird
+     * @mixins Ext.util.Observable
+     * @mixins Fliable
+     * @singleton
+     */
+    var x = {};
+JSDuck also supports Ext.extend syntax from Ext JS 3, automatically detecting the name of the class itself and its parent:
+
+/**
+ * A duck, not just a stupid bird.
+ */
+Duck = Ext.extend(Bird, {
+    ...
+});
+See @class documentation for details.
+
+Members
+All doc-comments following a class doc-comment will be assumed to be members of that class. There are six types of members: configs, properties, methods, events, SCSS variables, SCSS mixins.
+
+Only methods and configs inside config: {...} are auto-detected. Everything not looking like a method will be assumed to be a property. So be sure to always use @event and @cfg for documenting events.
+
+Methods
+Here's an example of typical method documentation with @param and @return tags:
+
+/**
+ * Returns a unique ID for use in HTML id attribute.
+ * @param {String/Number} nr A name or number of the ID.
+ * @param {String} [prefix="id-"] The prefix for the ID.
+ * @return {String} the new ID
+ */
+createId: function(nr, prefix){
+},
+You can see the types of parameters and return value (inside curly braces) and the syntax for optional parameter (enclosed in square brackets) and its default value.
+
+JSDuck will also auto-detect all the methods without a doc-comment inside Ext.define() as private methods:
+
+/** */
+Ext.define("MyClass", {
+    privateMethod: function() {
+    },
+
+    statics: {
+        staticPrivateMethod: function() {
+        }
+    }
+});
+Constructors are documented just like normal methods:
+
+/**
+ * Creates new Duck from proper duck egg.
+ * @param {DuckEgg} egg  Egg with DNA configuration for new duck.
+ */
+constructor: function(egg) {
+See @method for details.
+
+Events
+Events are a lot like methods, except that they don't have return values.
+
+/**
+ * @event
+ * Triggered after component gets hidden.
+ * @param {Ext.Component}
+ */
+"hide",
+@event tag can be followed by event name, but in the above case it is auto-detected.
+
+See @event for details.
+
+Configs
+Configs are a lot like method parameters. They can have default values and sub-properties.
+
+/**
+ * @cfg {Object} size Size of the item.
+ * @cfg {Number} [size.width=0]
+ * @cfg {Number} [size.height=0]
+ */
+size: {width: 0, height: 0},
+Configs inside config:{} block are auto-detected:
+
+/** */
+Ext.define("MyClass", {
+    config: {
+        /**
+         * CSS class names to apply for root element.
+         */
+        cls: ["x-component", "x-item"],
+    }
+});
+The above will be auto detected as config option cls of type String[] with default value ["x-component", "x-item"].
+
+See @cfg for details.
+
+Properties
+The syntax for @property is almost the same as for @cfg:
+
+/**
+ * @property {Boolean} [readOnly=false]
+ * True when component is in read-only state.
+ */
+Properties with simple literal default values can take advantage of auto-detection:
+
+/**
+ * True when component is in read-only state.
+ */
+readOnly: false,
+JSDuck will also detect all your private properties inside Ext.define:
+
+/** */
+Ext.define("MyClass", {
+    visible: true,
+    title: "hello",
+    pattern: /.*/
+});
+See @property for details.
+
+SCSS variables and mixins
+JSDuck comes with some initial support for documenting SCSS variables and mixins.
+
+/**
+ * @var {color}
+ * A base text color.
+ */
+$base-color: red !default;
+
+/**
+ * Creates a pretty button.
+ * @param {color} $color Which color to use
+ * @param {percentage} [$scale=100%] Relative size
+ */
+@mixin my-button($color, $scale: 100%) {
+}
+The SCSS support should still be considered somewhat experimental and subject to change, though Sencha Touch documentation has been using it for quite a while now.
+
+See @var and @scss-mixin for details.
+
+Type definitions
+Throughout this guide you've seen type definitions like {Number}. These aren't just arbitrary strings enclosed in curly braces - there's a specific syntax for specifying types and JSDuck will check that you follow it. See Type Definitions guide for details.
+
+Cross-references
+Inside comments you can link to classes and class members using the {@link} tag:
+
+{@link Class#member link text}
+But JSDuck will also automatically create links to classes if it sees NameSpace.Class, SomeClass#method or #method.
+
+For example:
+
+Look at the {@link Duck} class.  There are methods like
+Duck#fly and Duck#swim and even this
+{@link Duck#walk particularly slow method}.
+
+Now compare it to #move method of this class, that does
+all the above.
+This will produce something like this:
+
+Look at the Duck class. There are methods like Duck.fly and Duck.swim end even this particularly slow method.
+
+Now compare it to move method of this class, that does all of the above.
+
+Sometimes the name is not enough to uniquely identify a class member. For example Ext.data.Store has a load method and load event. In such case, prepend cfg-, property-, method- or event- to the member name:
+
+Listen to the {@link Ext.data.Store#event-load load event}
+Or you might need to reference a static method when an instance method of the same name exists:
+
+Use {@link Ext.form.field.Field#static-method-getName getName} to get class name.
+For links to other websites, and things within the docs app itself like guides, use Markdown links:
+
+See [Getting Started Guide](#!/guide/getting_started) or check
+out [Sencha website][1] for more.
+
+[1]: http://www.sencha.com/
+For links to guides, videos and examples, check out also the @aside tag.
+
+Images
+You can include images inside the documentation using the {@img} tag:
+
+{@img path/to/image.png alt text}
+The paths should be relative to the directory specified by --images option (there can be more than one to list multiple search paths).
+
+For ExtJS 4 you can simply refer to the doc-resources directory of downloaded release:
+
+$ jsduck extjs-4.0.7/src --images=extjs-4.0.7/docs/doc-resources --output my-docs
+All the linked images will then be copied over to output directory, while {@img} tags will become repleced with markup like:
+
+<p><img src="doc-resources/path/to/image.png" alt="alt text"/></p>
+For full control over the created markup you can use the --img command line option.

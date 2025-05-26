@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { ToolHandler } from "../types/index.js";
 
 export class ListAvailableFilesTool implements ToolHandler {
@@ -12,15 +11,29 @@ export class ListAvailableFilesTool implements ToolHandler {
         type: "object",
         properties: {},
         required: [],
-      },
+      }
     };
   }
 
-  async onCall() {
-    const availableFiles = [
-      "CSharp_Style_Guide.txt",
-    ];
+async onCall() {
+  try {
+    const availableFiles = [{ name: "CSharp_Style_Guide.txt" }];
+    const fileListString = availableFiles.map(f => `- ${f.name}`).join("\n");
 
-    return { files: availableFiles };
-  }
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Dostępne pliki:\n${fileListString}`
+        }
+      ]
+    };
+  } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Error in ListAvailableFilesTool: ${error.message}`);
+      } else {
+        throw new Error(`Error in ListAvailableFilesTool: Unknown error`);
+      }
+    }
+}
 }

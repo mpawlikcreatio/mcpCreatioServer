@@ -1,7 +1,8 @@
-import dotenv from "dotenv";
+import { loadConfig } from "./config.js";
 import { LocalMcpServer } from "./api/localMcpServer.js";
 
-dotenv.config();
+
+ loadConfig();
 
 const server = new LocalMcpServer();
 server.run().catch(console.error);

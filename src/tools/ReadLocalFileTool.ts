@@ -1,10 +1,6 @@
 import { ToolHandler } from "../types/index.js";
 import fs from "fs/promises";
 import path from "path";
-import dotenv from "dotenv";
-import { z } from "zod";
-
-dotenv.config();
 
 export class ReadLocalFileTool implements ToolHandler {
   name = "read_local_file";

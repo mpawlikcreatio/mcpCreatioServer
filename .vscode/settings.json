@@ -1,0 +1,11 @@
+{
+    "mcp": {
+        "inputs": [],
+        "servers": {
+            "local": {
+            "command": "node",
+            "args": ["C:\\Users\\m.pawlik\\programs\\mcpCreatioServer\\build\\index.js"],
+            }
+        }
+    }
+}
