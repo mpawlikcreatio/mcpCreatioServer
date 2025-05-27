@@ -1,0 +1,18 @@
+C# Unit Testing Guidelines (NUnit + NSubstitute)
+
+1. Follow the **Arrange-Act-Assert (AAA)** pattern:
+   - **Arrange**: Prepare inputs, dependencies and mocks.
+   - **Act**: Execute the method under test.
+   - **Assert**: Validate the expected results or interactions.
+
+2. Use `[Test]` for individual test cases. Prefer `[TestCase(...)]` for parameterized scenarios:
+   - `[Test]` – single specific scenario.
+   - `[TestCase]` – when testing same logic with different inputs.
+
+3. Naming convention: MethodName_Scenario_ExpectedOutcome  
+   Example: `CalculateTotal_WithValidInput_ReturnsCorrectSum`
+
+4. Use **NSubstitute** to create fake dependencies:
+   ```csharp
+   var repository = Substitute.For<IRepository>();
+   repository.GetAll().Returns(new[] { ... });

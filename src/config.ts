@@ -3,8 +3,8 @@ import { fileURLToPath } from "url";
 import path from "path";
 
 type Config = {
-  LOCAL_FILE_PATH: string;
-  LOCAL_FILE_TYPE: string;
+  GUIDE_FILES_DIR: string;
+  PROMPT_DIR:string
 };
 
 function loadConfig(): Config {
@@ -12,18 +12,18 @@ function loadConfig(): Config {
   const __dirname = path.dirname(__filename);
   dotenv.config({ path: path.join(__dirname, ".env") });
 
-  const LOCAL_FILE_PATH = process.env.LOCAL_FILE_PATH;
-  const LOCAL_FILE_TYPE = process.env.LOCAL_FILE_TYPE;
+  const GUIDE_FILES_DIR = process.env.GUIDE_FILES_DIR;
 
-  if (!LOCAL_FILE_PATH) {
-    throw new Error("LOCAL_FILE_PATH environment variable is not set.");
+  const PROMPT_DIR = process.env.PROMPT_DIR;
+
+  if (!GUIDE_FILES_DIR) {
+    throw new Error("GUIDE_FILES_DIR environment variable is not set.");
+  }
+    if (!PROMPT_DIR) {
+    throw new Error("PROMPT_DIR environment variable is not set.");
   }
 
-  if (!LOCAL_FILE_TYPE) {
-    throw new Error("LOCAL_FILE_TYPE environment variable is not set.");
-  }
-
-  return { LOCAL_FILE_PATH, LOCAL_FILE_TYPE };
+  return { GUIDE_FILES_DIR, PROMPT_DIR };
 }
 
 export { loadConfig, Config };
