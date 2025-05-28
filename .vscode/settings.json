@@ -1,11 +1,21 @@
 {
-    "mcp": {
-        "inputs": [],
-        "servers": {
-            "local": {
-            "command": "node",
-            "args": ["C:\\Users\\m.pawlik\\programs\\mcpCreatioServer\\build\\index.js"],
-            }
-        }
+  "mcp": {
+    "inputs": [],
+    "servers": {
+      "local": {
+        "command": "node",
+        "args": [
+          "C:\\Users\\m.pawlik\\programs\\mcpCreatioServer\\build\\index.js"
+        ]
+      }
     }
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

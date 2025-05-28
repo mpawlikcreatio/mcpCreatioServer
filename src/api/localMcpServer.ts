@@ -31,9 +31,9 @@ export class LocalMcpServer {
     );
 
     this.tools = new Map();
-    this.registerTool(new ReadLocalFileTool()); 
-    this.registerTool(new ListAvailableFilesTool()); 
-    this.registerTool(new ListPromptsTool()); 
+    this.registerTool(new ReadLocalFileTool());
+    this.registerTool(new ListAvailableFilesTool());
+    this.registerTool(new ListPromptsTool());
 
     this.setupHandlers();
 

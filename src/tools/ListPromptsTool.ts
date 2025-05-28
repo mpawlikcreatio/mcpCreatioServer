@@ -18,11 +18,14 @@ export class ListPromptsTool implements ToolHandler {
   }
 
   async onCall() {
-    const promptDir = process.env.PROMPT_DIR || path.resolve(process.cwd(), "prompts");
+    const promptDir =
+      process.env.PROMPT_DIR || path.resolve(process.cwd(), "prompts");
 
     try {
       const files = await fs.readdir(promptDir);
-      const promptFiles = files.filter(file => file.endsWith(".txt") || file.endsWith(".md"));
+      const promptFiles = files.filter(
+        (file) => file.endsWith(".txt") || file.endsWith(".md")
+      );
 
       if (promptFiles.length === 0) {
         return {
@@ -35,7 +38,7 @@ export class ListPromptsTool implements ToolHandler {
         };
       }
 
-      const fileList = promptFiles.map(file => `- ${file}`).join("\n");
+      const fileList = promptFiles.map((file) => `- ${file}`).join("\n");
 
       return {
         content: [

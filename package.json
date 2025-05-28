@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "okx-mcp-server": "./build/index.js"
+    "local-mcp-server": "./build/index.js"
   },
   "scripts": {
-  "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\" && copy .env build\\.env",
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\" && copy .env build\\.env",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js"
@@ -19,7 +19,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mpawlikcreatio/mcpCreatioServer/issues"
   },
