@@ -8,7 +8,6 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { ToolHandler } from "../types/index.js";
 import { ReadLocalFileTool } from "../tools/ReadLocalFileTool.js";
-import { GetPromptTool } from "../tools/GetPromptTool.js";
 import { ListAvailableFilesTool } from "../tools/ListAvailableFilesTool.js";
 import { ListPromptsTool } from "../tools/ListPromptsTool.js";
 
@@ -32,7 +31,6 @@ export class LocalMcpServer {
     );
 
     this.tools = new Map();
-    this.registerTool(new GetPromptTool());
     this.registerTool(new ReadLocalFileTool()); 
     this.registerTool(new ListAvailableFilesTool()); 
     this.registerTool(new ListPromptsTool()); 

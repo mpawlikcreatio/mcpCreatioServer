@@ -31,11 +31,15 @@ export class ReadLocalFileTool implements ToolHandler {
   async onCall(args: { fileName: string }) {
     const { fileName } = args;
 
-    const basePath = process.env.GUIDE_FILES_DIR || process.cwd();
+    const isPrompt = fileName.startsWith("prompt_");
+    const basePath = isPrompt
+      ? process.env.PROMPT_DIR || path.resolve(process.cwd(), "prompts")
+      : process.env.GUIDE_FILES_DIR || process.cwd();
+
     const resolvedPath = path.resolve(basePath, fileName);
     const ext = path.extname(fileName).slice(1).toLowerCase();
-
     const fileType = LOCAL_SUPPORTED_TYPES[ext];
+    
     if (!fileType) {
       throw new Error(
         `Unsupported file type '${ext}'. Supported types: ${Object.keys(
