@@ -1,0 +1,9 @@
+{
+  "inputs": [],
+  "servers": {
+    "local": {
+      "command": "node",
+      "args": ["C:\\Projects\\mcpLocalServer\\build\\index.js"]
+    }
+  }
+}

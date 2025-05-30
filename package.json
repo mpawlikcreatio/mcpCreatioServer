@@ -1,5 +1,5 @@
 {
-  "name": "mcpcreatioserver",
+  "name": "mcplocalserver",
   "version": "1.0.0",
   "description": "mcp server for personal use",
   "main": "index.js",
