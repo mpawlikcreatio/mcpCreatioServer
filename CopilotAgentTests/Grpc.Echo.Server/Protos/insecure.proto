@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "Grpc.Echo.Server";
+
+package insecure;
+
+service Insecure {
+  rpc GetRecord (GetRecordRequest) returns (RecordResponse);
+  rpc SetRecord (SetRecordRequest) returns (RecordResponse);
+}
+
+message GetRecordRequest {
+  string name = 1;
+}
+
+message SetRecordRequest {
+  string name = 1;
+  string value = 2;
+  string path = 3;
+}
+
+message RecordResponse {
+  string message = 1;
+}
